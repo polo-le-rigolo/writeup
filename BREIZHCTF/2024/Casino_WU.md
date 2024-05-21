@@ -9,8 +9,8 @@ Summary of the write up :
 
 
 ## Intro
-This challenge was labelled with the **pentest** and **web** category and difficulty was **medium**
-To start we are given a playing card with a username `tbenedict` and an URL : `sirene.casinolimit.bzh`
+This challenge was labelled with the **pentest** and **web** category and difficulty was **medium**.
+To start we are given a playing card with a username `tbenedict` and an URL : `sirene.casinolimit.bzh`.
 Launching an nmap scan on this url reveals several open ports : 
 
 ```Nmap scan report for sirene.casinolimit.bzh (135.125.135.213)
@@ -56,7 +56,7 @@ Let's dig deeper into this with nmap :
 
 The two messages indicated we have to check CCTV and then check our emails on the bastion. The result of the nmap scan seem very promising. 
 
-##CCTV 
+## CCTV 
 Since the camera seem to be accessible on port 5000 on the "meeting cam" server, let's try to access it : 
 `curl -i http://10.35.122.11:5000/` 
 The answer is the same as with the nmap scan, the server answers us, but we don't have a valid endpoint. 
@@ -153,7 +153,8 @@ Two options :
 
 We choose the second option : 
 
-```curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && 
+```
+curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && 
 sudo dpkg -i cloudflared.deb && 
 sudo cloudflared service install [YOUR_CLOUDLFARE_TOKEN]
 ```
