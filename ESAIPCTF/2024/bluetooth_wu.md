@@ -42,8 +42,10 @@ This seems very promising as we are requested to retrieve sensitive information 
 *Figure 6 : Wireshark filter to pin down the PDF file header*
 
 Looking closely at the data field of this packet confirms it is the start of a PDF file, and its name is "echange_secret.pdf" : seems like we're on the right track : 
+
 ![Echange secret PDF HEADER](/ESAIPCTF/2024/images/7.Echange_secret.png)
-*Figure 7 : PDF header containing echange secret*
+
+    *Figure 7 : PDF header containing echange secret*
 
 Let's change our wireshark filter to **bluetooth.addr == 22:22:48:08:a5:80** to get the full object exchange between our device and the phone. 
 
