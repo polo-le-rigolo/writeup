@@ -65,7 +65,7 @@ Ensuite en accédant à la machine en 192.168.12.1 on arrive bien sur un serveur
 
 Dans robots.txt on trouve les informations suivantes 
 
-![Image robots.txt](HACKVENS/images/robots_text.png)
+![Image robots.txt](/HACKVENS/images/robots_text.png)
 
 ![Image todo.txt](/images/todo_text.png)
 
