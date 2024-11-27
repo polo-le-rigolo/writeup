@@ -88,7 +88,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoic3VwZXJ
 
 On refresh la page et on arrive sur ça : 
 
-![Page admin impression](/HACKVENS/test_impression.png)
+![Page admin impression](/HACKVENS/images/test_impression.png)
 
 En entrant une adresse IP, le serveur déclenche une impression vers cette dernière. Grâce au nom de la capture réseau (cups.pcap), nous comprenons qu'il faut exploiter la / les récentes CVEs sur cups.
 En faisant quelques recherches on tombe sur le répo suivant avec un poc et une explication des CVEs : https://github.com/0xCZR1/PoC-Cups-RCE-CVE-exploit-chain
