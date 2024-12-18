@@ -22,18 +22,18 @@ PORT     STATE SERVICE
 ```
 
 Connecting to the web server on port 8080 we are granted with a login page for what appears to be an OpenPLC instance : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/1_OpenPLC_login.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/1_OpenPLC_login.png)
 
 A PLC (Programmable Logic Controller) is an industrial computer designed for controlling manufacturing processes, machinery, and factory assembly lines. And as its name suggests, it is programmable, meaning it can be configured and reconfigured by writing and loading different control programs. It typically uses specialized programming languages such as Ladder Logic / Structured Text / Function Block Diagram.
 
 OpenPLC is an open-source PLC platform that provides cheap and flexible alternative to traditional proprietary PLCs. It allows users to create and customize their own PLC systems using open-source tools and resources (can be installed on a lot of different systems including linux, windows, raspberry pis, esp32 and even arduinos if they ahve network capabilities).
 
 Let's get back to our box, a straight forward "OpenPLC Webserver default credentials" internet search and we stumble accross an article on how to set up OpenPLC on a raspberry pi : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/2_OpenPLC_setup_article.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/2_OpenPLC_setup_article.png)
 
 We can then login with `openplc` as user / password  
 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/3_OpenPLC_dashboard.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/3_OpenPLC_dashboard.png)
 
 ## OpenPLC_RCE
 
@@ -59,12 +59,12 @@ void initCustomLayer()
 ```
 As written in the comments, the initCustomLayer() function is invoked when the PLC is initialized or started up. Theoretically if we write our own code here and start the PLC we should be able to obtain a RCE on the server.
 Let's inject a reverse shell payload (payload.c file) in this block of code and compile it :
-![OpenPLC login](/HTB/medium/images/WifineticTwo/4_compiled_RCE_payload.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/4_compiled_RCE_payload.png)
 
 We obtained a root shell on the machine : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/5_successful_rev_shell.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/5_successful_rev_shell.png)
 Let's stabilise the shell with python : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/6_stabilised_python_shell.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/6_stabilised_python_shell.png)
 
 ## Wifi_attack
 
@@ -117,14 +117,14 @@ The large number of possible combinaisons (the last digit being a checksum of th
 
 Let's try exploit this vulnerability and gain access to the network. Reaver and airgeddon both are tools that I've used in the past for wifi pentesting and that support a pixie dust module. Uploading either of them onto the machine (since the machine doesn't have internet access we can curl the binaries and the shared libraries from our local machine) was my initial idea. Unfortunately I realised that the wireless network adapter (wlan0) didn't support monitor mode. And both reaver and airgeddon require this mode to function. After searching for a tool to perform a pixie dust attack I stumbled accross this on a github repo `OneShot performs Pixie Dust attack without having to switch to monitor mode.`. Sounds promising! Let's check if all the requirement (iw / wpa_supplicant / pixiewps / python 3.6 minimum) are met on the box : 
 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/7_requirements_oneshot.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/7_requirements_oneshot.png)
 
 We need to download pixiewps on the box but it doesn't have access to the internet. Let's download pixiewps on our local machine and start a web server with **python3 -m http.server 8080**. We can now download it on the machine : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/8_download_pixiewps.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/8_download_pixiewps.png)
 
 Now we can move it to */usr/sbin/* and we should be able to use the oneshot.py script.
 After installing the script using the same method let's launch the attack : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/9_successfull_wifi_attack.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/9_successfull_wifi_attack.png)
 We successfully exploited the WPS vulnerability on the plcrouter network.
 The pin has been recovered (*12345670*) and the pre shared key has been obtained *NoWWEDoKnowWhaTisReal123!*.
 Let's create a wpa_supplicant.conf file and place it into /etc/wpa_supplicant/ : 
@@ -138,11 +138,11 @@ network={
 And connect to the wifi network with :`wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf`
 **-B** runs wpa_supplicant in the background (otherwise we'd loose our shell)
 Let's check if we managed to successfully connect to our network with **iwconfig** : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/10_iwconfig_connected_to_network.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/10_iwconfig_connected_to_network.png)
 Great! Let's try to get an ip address by running dhclient on wlan0 (still in the background : **dhclient wlan0 &**)
 Unfortunately we couldn't seem to get an ip address with dhclient. 
 I got stuck at this step, trying several stuff and loosing the shell numerous times. Then I set up a static ip addr in the default private subnet 192.168.1.0/24 : `sudo ip addr add 192.168.1.2/24 dev wlan0`
 I downloaded the nmap binary onto the machine, from my local machine, with curl and scanned the subnet. 
 One machine answered our ping sweep (192.168.1.1) and port 22 was listening : 
-![OpenPLC login](/HTB/medium/images/WifineticTwo/11_root_flag.png)
+![OpenPLC login](/HTB/medium/WifineticTwo/images/11_root_flag.png)
 
