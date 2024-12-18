@@ -65,9 +65,9 @@ Ensuite en accédant à la machine en 192.168.12.1 on arrive bien sur un serveur
 
 Dans robots.txt on trouve les informations suivantes 
 
-![Image robots.txt](HACKVENS/2024/images/robots_text.png)
+![Image robots.txt](/HACKVENS/2024/images/robots_text.png)
 
-![Image todo.txt](HACKVENS/2024/images/todo_text.png)
+![Image todo.txt](/HACKVENS/2024/images/todo_text.png)
 
 -------------------------------------------------------
 
@@ -108,17 +108,17 @@ Nous tentons d'utiliser le POC de ce même répo mais sans succès : le port 631
 ```
 
 Ensuite on lance un `nc -lnvp 4444` et on trigger une impression depuis la webview vers notre laptop en `192.168.12.45` : 
-![Payload sent](HACKVENS/2024/images/payload_envoye.png)
+![Payload sent](/HACKVENS/2024/images/payload_envoye.png)
 
 On chope notre shell et un flag.txt : 
-![Fake flag](HACKVENS/2024/images/false_espoir.png)
+![Fake flag](/HACKVENS/2024/images/false_espoir.png)
 
 La solve "légit" était de relancer une impression avec un wireshark qui tourne sur notre laptopt et on extrait le pdf depuis la capture dans le IPP response : 
-![IPP response](HACKVENS/2024/images/IPP_response.png)
+![IPP response](/HACKVENS/2024/images/IPP_response.png)
 l
 Dans notre cas nous avons simplement `base64 doc/thomas-ruyant-pos.pdf` ctrl + shift + c
 Et sur notre laptop `echo -n "base64 string du pdf" | base64 -d > flag.pdf`
-![Real flag](HACKVENS/2024/images/flag_final.png)
+![Real flag](/HACKVENS/2024/images/flag_final.png)
 
 Le challenge était vraiment sympa mais seul problème les neuilles qui fuzzaient le serveur web pour rien (instance partagée qui a crashée pas mal de fois). Autre galère rencontrée : pas réussir à faire marcher le premier poc. Et je testais ma RCE avec un `python3 -m http.server 1234` en local et un payload du style `curl http://ip_laptop:1234/` mais je ne recevais rien car la machine cible n'avait pas `curl` d'installé :/
 
