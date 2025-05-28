@@ -7,7 +7,7 @@ interiut organisé conjointement par HACK2G2 et l'ENSIBS. Le but final du challe
 
 ![Coffre connecté](/challmaking/interiut2025/ESPionnage/img/coffre.jpg)
 
-
+## Sommaire du writeup
 1. [ESPionnage 1/3](#ESPionnage_1)
 2. [ESPionnage 2/3](#ESPionnage_2)
 3. [ESPionnage 3/3](#ESPionnage_3)
@@ -36,10 +36,10 @@ L’appareil tentera automatiquement de s’authentifier à un serveur CASTEM, u
 ```
 Après analyse de la capture wireshark, on peut remarquer un échange de messages MQTT avant le curl du firmware. Le device se connecte au broker et subscribe au topic /auth-token, le broker renvoie des messages publiés sur ce même topic. On note les informations suivantes : 
 
--Username MQTT : *iotcastem*
--Mdp MQTT : *tungtungsahur*
--L'url du broker : *eddymalou.fr*
--Le topic : */auth-token* 
+- Username MQTT : *iotcastem*
+- Mdp MQTT : *tungtungsahur*
+- L'url du broker : *eddymalou.fr*
+- Le topic : */auth-token* 
 
 On peut se connecter au broker avec un client mqtt :
 
