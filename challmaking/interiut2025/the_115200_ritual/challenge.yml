@@ -1,0 +1,37 @@
+name: "The 115200 ritual"
+author: "Philippe_Katerine"
+category: Hardware
+description: |- 
+ Une transmission étrange a été interceptée dans l’un des centres de recrutement de la secte CASTEM.
+
+ Grâce à une brève intrusion sur leur réseau de capteurs, nous avons pu connecter un analyseur logique à l’un de leurs dispositifs. 
+
+ À vous maintenant de décoder cette transmission!
+
+ Exemple de flag : interiut{flag}
+
+attribution: Written by Philippe_Katerine
+value: 500
+type: dynamic
+
+extra:
+    initial: 500
+    decay: 16
+    minimum: 100
+
+flags:
+    - interiut{U4rt_c0mmunic4tion_1s_fun} 
+topics:
+   - serial communication
+   - logic analyzer
+
+tags:
+    - Facile
+    - hardware
+
+files:
+    - dist/the_115200_ritual.vcd
+
+state: visible
+
+version: "0.1"

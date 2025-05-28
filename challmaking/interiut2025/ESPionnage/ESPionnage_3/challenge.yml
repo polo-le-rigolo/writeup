@@ -1,0 +1,36 @@
+name: "ESPionnage 3/3"
+author: "Philippe_Katerine"
+category: Hardware
+description: |- 
+
+Vous avez désormais en main la valeur autorisée par le firmware du coffre-fort. Mais posséder la connaissance ne suffit pas… il vous faut maintenant agir, comme le ferait un véritable initié de la secte.
+
+Chaque équipe a reçu une carte NFC. À vous de trouver une moyen d'ouvrir le coffre sans se faire prendre par les gardes!  
+
+Le coffre se trouve sur la table des admins, et le flag final se trouve à l’intérieur du coffre.
+
+Exemple de flag : interiut{flag}
+
+attribution: Written by Philippe_Katerine
+value: 500
+type: dynamic
+
+extra:
+    initial: 500
+    decay: 16
+    minimum: 100
+
+flags:
+    - interiut{haribo_cest_beau_la_vie_pour_les_grands_et_les_petits} 
+topics:
+   - nfc
+
+tags:
+    - Moyen
+    - hardware
+
+files:
+    
+state: visible
+
+version: "0.1"

@@ -1,0 +1,39 @@
+name: "ESPionnage 1/3"
+author: "Philippe_Katerine"
+category: Hardware
+description: |- 
+
+Ce challenge se déroule en trois étapes. Le but final étant d’accéder au contenu d'un coffre-fort connecté situé sur la table des Admins. Chaque étape se débloque en résolvant la précédente.
+
+Pour cette première phase, vous interceptez une transmission sur le réseau sans fil de la secte CASTEM lors de l'OTA du coffre. Une capture réseau de cette transmission ainsi qu'une documentation sur le coffre sont à télécharger. À vous de l’analyser pour récupérer le firmware embarqué du système de verrouillage.
+
+Le flag de ce premier challenge est le hash sha256 du binaire. 
+
+Exemple de flag : interiut{sha256(firmware.bin)}
+
+attribution: Written by Philippe_Katerine
+value: 500
+type: dynamic
+
+extra:
+    initial: 500
+    decay: 16
+    minimum: 100
+
+flags:
+    - interiut{23b5141d81e852b5683ddf10a8e8036dd20c5675b4547d4ba44e4407343e50d1} 
+topics:
+   - mqtt 
+   - network
+
+tags:
+    - Facile
+    - hardware
+
+files:
+    - dist/ota.pcapng
+    - dist/doc.pdf
+    
+state: visible
+
+version: "0.1"

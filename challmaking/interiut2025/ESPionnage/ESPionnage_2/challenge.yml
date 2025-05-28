@@ -1,0 +1,38 @@
+name: "ESPionnage 2/3"
+author: "Philippe_Katerine"
+category: Hardware
+description: |- 
+
+Vous avez mis la main sur le firmware du coffre-fort, bravo! CASTEM pensait sa technologie inviolable... mais c’est à vous de prouver le contraire.
+
+Dans cette deuxième phase, vous devrez analyser le binaire extrait et comprendre le fonctionnement interne du système de verrouillage. L’objectif est d’identifier la bonne valeur de la carte autorisée à ouvrir le coffre.
+
+Le firmware a été compilé pour une carte ESP32, et contient tout le code nécessaire à la gestion du lecteur NFC et de l’interface graphique.
+
+Le flag de ce challenge est la string décodée hexa -> ascii de la bonne valeur qui ouvre le coffre.
+
+Exemple de flag : interiut{string_ascii}
+
+attribution: Written by Philippe_Katerine
+value: 500
+type: dynamic
+
+extra:
+    initial: 500
+    decay: 16
+    minimum: 100
+
+flags:
+    - interiut{rickroll} 
+topics:
+   - ESP32
+   - reverse
+tags:
+    - Moyen
+    - hardware
+    - reverse
+files:
+    
+state: visible
+
+version: "0.1"
