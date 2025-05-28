@@ -76,9 +76,9 @@ Une fois l’analyse terminée, on peut aller explorer les strings contenues dan
 
 Dans la programmation de microcontrôleurs (comme les arduino ou esp32), deux fonctions principales structurent le programme :
 
--setup() qui permet initialiser les périphériques, interfaces ou variables
+- setup() qui permet initialiser les périphériques, interfaces ou variables
 
--loop() qui s'exécute en boucle et représente la logique principale du programme (équivalent du main() dans un programme classique)
+- loop() qui s'exécute en boucle et représente la logique principale du programme (équivalent du main() dans un programme classique)
 
 En examinant la fonction loop décompilée, on tombe sur un bloc de code particulièrement intéressant :
 
@@ -137,8 +137,8 @@ Grâce à un téléphone Android doté d'une puce NFC, on peut utiliser l'applic
 Une MIFARE Classic 1K est divisée en 16 secteurs et chaque secteur contient 4 blocs, chaque bloc contient 16 octets. Donc au total : 16 secteurs × 4 blocs × 16 octets = 1024 octets (1 Ko)
 
 Les blocs sont numérotés de 0 à 63, de façon linéaire, c’est-à-dire :
-Secteur 0, les blocs sont 0 / 1 / 2 / 3 
-Secteur 1, les blocs sont 4 / 5 / 6 / 7
+- Secteur 0, les blocs sont 0 / 1 / 2 / 3 
+- Secteur 1, les blocs sont 4 / 5 / 6 / 7
 Et ainsi de suite. 
 
 Le secteur 0 est généralement non modifiable car il contient l’UID de la carte (modifiable uniquement sur certaines cartes chinoises "magic"). Mais cela n'a pas d'importance ici, car la vérification se fait sur le bloc 4, soit le premier bloc du secteur 1 : `uVar3 = PN532::mifareclassic_ReadDataBlock(&nfc,'\x04',data);`
