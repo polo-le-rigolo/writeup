@@ -35,4 +35,4 @@ Le nom du challenge, **"The 115200 Ritual"**, donne un indice : **115200** est u
 
 6. Le flag est directement visible dans l'UART décodé : interiut{U4rt_c0mmunic4tion_1s_fun} 
 
-![Pulseview solve](/challmaking/interiut2025/the_115200_ritual/solve)
+![Pulseview solve](/challmaking/interiut2025/the_115200_ritual/solve/solve_pulseview.png)
